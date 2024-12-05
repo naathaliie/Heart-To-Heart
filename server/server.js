@@ -4,6 +4,7 @@ import { connectToDataBase } from "./dataBase/connectToDataBase.js";
 import { levelsRouter } from "./routes/levelsRouter.js";
 import { categoriesRouter } from "./routes/categoriesRouter.js";
 import { questionsRouter } from "./routes/questionsRouter.js";
+import { userRouter } from "./routes/userRouter.js";
 
 const app = Express();
 const port = 3003;
@@ -30,6 +31,7 @@ app.use("*", async (req, res, next) => {
 
 //Få tillgång till alla endpoints
 app.use("/test", testRouter());
+app.use("/users", userRouter());
 app.use("/levels", levelsRouter());
 app.use("/categories", categoriesRouter());
 app.use("/questions", questionsRouter());
@@ -39,4 +41,6 @@ app.use("/questions", questionsRouter());
 app.listen(port,() => {
     console.log(`port is running on ${port}`);
 });
+
+
 

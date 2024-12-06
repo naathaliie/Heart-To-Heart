@@ -7,7 +7,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle={"dark-content"} backgroundColor={"#292057"} />
+      <StatusBar barStyle={"dark-content"} backgroundColor={"#352D30"} />
       <Image
         source={require("../assets/images/welcomeImg.jpeg")}
         style={styles.imgStyle}
@@ -17,7 +17,7 @@ export default function Index() {
       <Pressable
         style={styles.btn}
         onPress={() => {
-          router.push("/(tabs)/homeScreen");
+          router.replace("/loginScreen");
         }}
       >
         <Text style={styles.btnText}>Gå till appen</Text>
@@ -39,11 +39,6 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "absolute", // Gör att bilden fyller hela skärme
     backgroundColor: "#0553",
-  },
-  linkStyle: {
-    color: "white",
-    textDecorationLine: "underline",
-    fontSize: 20,
   },
   btn: {
     backgroundColor: "#08AEAD",

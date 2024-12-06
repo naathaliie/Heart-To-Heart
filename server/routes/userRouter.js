@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import Express from "express";
 import { zodUserSchema } from "../zodSchemas/zodUserSchema.js";
-import { userModel } from "../dataBase/mongooseModels/userSchema.js";
+import { userModel } from "../dataBase/mongooseModels/userModel.js";
 import jwt from 'jsonwebtoken'; // Importera jsonwebtoken
 
 // Ladda miljövariabler från .env-filen

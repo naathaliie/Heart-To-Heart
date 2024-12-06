@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 //LÄGG I EN EGEN MAPP MED ALLA CRUDs
-const currentIP: string = "192.168.124.17";
+const currentIP: string = "192.168.100.17";
 //Hämta alla users
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   const response = await axios.get(`http://${currentIP}:3003/users`);
@@ -32,7 +32,7 @@ const usersSlice = createSlice({
     error: null as string | null, // Tillåter både string och null
   },
   reducers: {},
-  //FÖR ALL HANTERING MOT DB
+  //EXTRAREDUCERS FÖR ALL HANTERING MOT DB
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { addNewUser, fetchUsers } from "@/redux/userSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { NewUser, User } from "@/types";
+import { updateCurrentUser } from "@/redux/currentUserSlice";
 
 export default function loginScreen() {
   const router = useRouter();
@@ -45,10 +46,6 @@ export default function loginScreen() {
     await dispatch(fetchUsers());
 
     // Logga de uppdaterade användarna
-    console.log(
-      "De users jag får nu EFTERÅT från rad 35 ser ut såhär: ",
-      users
-    );
   };
 
   if (loading) {
@@ -83,7 +80,11 @@ export default function loginScreen() {
         <Pressable
           style={styles.btn}
           onPress={() => {
-            router.replace("/(tabs)/homeScreen");
+            // Dispatcha action för att uppdatera currentUser i Redux
+            if (chossedProfile) {
+              dispatch(updateCurrentUser(chossedProfile)); // Uppdaterar Redux store med den valda användaren
+            }
+            router.replace("/categoryScreen");
           }}
         >
           <Text style={styles.btnText}>Gå till appen</Text>

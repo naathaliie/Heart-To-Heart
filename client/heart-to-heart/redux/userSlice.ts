@@ -32,6 +32,7 @@ const usersSlice = createSlice({
     error: null as string | null, // Tillåter både string och null
   },
   reducers: {},
+  //FÖR ALL HANTERING MOT DB
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -46,7 +47,7 @@ const usersSlice = createSlice({
         state.error = action.error.message || null;
       })
       .addCase(addNewUser.fulfilled, (state, action) => {
-        state.users.push(action.payload); //Lägg till användare i state
+        state.users.push(action.payload);
       });
   },
 });

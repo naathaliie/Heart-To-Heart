@@ -11,7 +11,7 @@ export default function QuestionCard({ oneQuestion }: QuestionCardProps) {
       <View style={styles.likeBox}></View>
 
       <View style={styles.questionBox}>
-        <Text>{oneQuestion.questionText}</Text>
+        <Text style={styles.text}>{oneQuestion.questionText}</Text>
       </View>
     </View>
   );
@@ -19,10 +19,20 @@ export default function QuestionCard({ oneQuestion }: QuestionCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    position: "absolute",
+    top: "20%",
+    right: "17%",
+    width: "65%",
+    height: "55%",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
+    backgroundColor: "plum",
+    borderRadius: 20,
+    padding: 20,
+  },
+  text: {
+    textAlign: "center",
   },
   likeBox: {},
   questionBox: {},

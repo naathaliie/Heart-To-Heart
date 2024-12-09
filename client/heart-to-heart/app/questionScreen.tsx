@@ -92,10 +92,9 @@ export default function QuestionScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "yellow", // Lägg till en bakgrund för att se skillnaden
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
   },
-  wrapper: { backgroundColor: "plum" },
-  slide1: {
-    backgroundColor: "lightgreen",
-  },
+  wrapper: {},
 });

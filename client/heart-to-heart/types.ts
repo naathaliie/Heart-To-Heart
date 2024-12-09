@@ -27,3 +27,10 @@ export type Category = {
   description: string;
   levelType: string;
 };
+
+/*****QUESTIONS*****/
+export type Question = {
+  _id: string;
+  questionText: string;
+  categoryType: string;
+};

@@ -2,13 +2,13 @@ import { fetchCategories } from "@/API/api";
 import { updateCurrentCategory } from "@/redux/currentCategory";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Category } from "@/types";
-import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
+  const router = useRouter();
   //Spara vald nivås kategorier
   const [filteredCategories, setFilteredCategories] = useState<
     Category[] | undefined
@@ -64,16 +64,17 @@ export default function HomeScreen() {
         <Text>Här ska alla kategorier synas</Text>
         {filteredCategories?.map((c) => {
           return (
-            //Gå till questionScreen och skicka med vald kategori
-            <Link
+            <Pressable
               key={c._id}
               onPress={() => {
                 dispatch(updateCurrentCategory(c));
+                //navigera till questionScreen
+                router.push("/questionScreen");
               }}
               style={styles.btn}
             >
               <Text>{c.title}</Text>
-            </Link>
+            </Pressable>
           );
         })}
       </View>

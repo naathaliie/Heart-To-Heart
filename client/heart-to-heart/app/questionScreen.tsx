@@ -1,8 +1,9 @@
 import { fetchQuestions } from "@/API/api";
+import QuestionCard from "@/components/questionCard";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Question } from "@/types";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function QuestionScreen() {
@@ -11,7 +12,9 @@ export default function QuestionScreen() {
   const dispatch = useDispatch<AppDispatch>();
 
   //Tillhandahålla all frågor för vald kategori
-  const [hej, setHej] = useState<Question[] | undefined>(undefined);
+  const [relevantQuestions, setrelevantQuestions] = useState<
+    Question[] | undefined
+  >(undefined);
 
   //vald kategori
   const currentCategory = useSelector(
@@ -39,7 +42,7 @@ export default function QuestionScreen() {
     const relevantQuestions = questions.filter((q) => {
       return q.categoryType === currentCategory.currentCategory?.title;
     });
-    setHej(relevantQuestions);
+    setrelevantQuestions(relevantQuestions);
   }, [questions, currentCategory]);
 
   if (loading) {
@@ -54,15 +57,13 @@ export default function QuestionScreen() {
     <View style={styles.container}>
       <Text>Här skall alla frågor synas</Text>
 
-      <View>
-        {hej?.map((q) => {
-          return (
-            <View key={q._id}>
-              <Text>{q.questionText}</Text>
-            </View>
-          );
-        })}
-      </View>
+      <FlatList
+        style={styles.flatlistStyle}
+        horizontal
+        data={relevantQuestions}
+        keyExtractor={(item) => item._id.toString()}
+        renderItem={({ item }) => <QuestionCard oneQuestion={item} />}
+      ></FlatList>
     </View>
   );
 }
@@ -72,5 +73,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  flatlistStyle: {
+    width: "80%",
   },
 });

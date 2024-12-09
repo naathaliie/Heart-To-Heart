@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function QuestionView() {
+export default function QuestionScreen() {
   return (
     <View style={styles.container}>
       <Text>questionView</Text>

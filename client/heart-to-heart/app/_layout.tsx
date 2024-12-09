@@ -19,7 +19,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="categoryScreen"
+          name="levelsScreen"
           options={{
             headerShown: false,
           }}

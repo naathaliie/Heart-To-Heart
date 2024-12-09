@@ -2,10 +2,10 @@ import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
 import { useRouter } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { addNewUser, fetchUsers } from "@/redux/userSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { NewUser, User } from "@/types";
 import { updateCurrentUser } from "@/redux/currentUserSlice";
+import { addNewUser, fetchUsers } from "@/API/api";
 
 export default function loginScreen() {
   const router = useRouter();
@@ -84,7 +84,7 @@ export default function loginScreen() {
             if (chossedProfile) {
               dispatch(updateCurrentUser(chossedProfile)); // Uppdaterar Redux store med den valda användaren
             }
-            router.replace("/categoryScreen");
+            router.replace("/levelsScreen");
           }}
         >
           <Text style={styles.btnText}>Gå till appen</Text>

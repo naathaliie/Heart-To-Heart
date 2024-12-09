@@ -5,9 +5,15 @@ import { Question } from "@/types";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import Swiper from "react-native-swiper";
 
 export default function QuestionScreen() {
-  console.log("************************");
+  const testQuestions = [
+    { _id: "1", questionText: "Testfråga 1" },
+    { _id: "2", questionText: "Testfråga 2" },
+    { _id: "3", questionText: "Testfråga 3" },
+  ];
+
   //dispatch=en funktion för att skicka actions till redux store
   const dispatch = useDispatch<AppDispatch>();
 
@@ -15,7 +21,6 @@ export default function QuestionScreen() {
   const [relevantQuestions, setrelevantQuestions] = useState<
     Question[] | undefined
   >(undefined);
-
   //vald kategori
   const currentCategory = useSelector(
     (state: RootState) => state.currentCategory
@@ -37,8 +42,8 @@ export default function QuestionScreen() {
     }
   }, [dispatch, questions.length]);
 
+  //En till useEffect som lyssnar på om questions eller currrentCategory ändras
   useEffect(() => {
-    console.log("först nu körs den andra useeffect");
     const relevantQuestions = questions.filter((q) => {
       return q.categoryType === currentCategory.currentCategory?.title;
     });
@@ -53,28 +58,44 @@ export default function QuestionScreen() {
     return <Text>Error: {error}</Text>;
   }
 
-  return (
-    <View style={styles.container}>
-      <Text>Här skall alla frågor synas</Text>
+  const test = relevantQuestions?.map((q) => {
+    return q.questionText;
+  });
+  console.log("antal frågor= ", relevantQuestions?.length);
+  console.log("Fråge titlar= ", test);
 
-      <FlatList
-        style={styles.flatlistStyle}
-        horizontal
-        data={relevantQuestions}
-        keyExtractor={(item) => item._id.toString()}
-        renderItem={({ item }) => <QuestionCard oneQuestion={item} />}
-      ></FlatList>
-    </View>
-  );
+  if (relevantQuestions?.length !== undefined) {
+    return (
+      <View style={styles.container}>
+        <Text>Hej från questionsScreen</Text>
+
+        <Swiper
+          key={relevantQuestions.length}
+          style={styles.wrapper}
+          showsButtons={true}
+        >
+          {relevantQuestions.map((question, index) => (
+            <QuestionCard oneQuestion={question} />
+          ))}
+        </Swiper>
+      </View>
+    );
+  } else {
+    return (
+      <View>
+        <Text>Laddar...</Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "yellow", // Lägg till en bakgrund för att se skillnaden
   },
-  flatlistStyle: {
-    width: "80%",
+  wrapper: { backgroundColor: "plum" },
+  slide1: {
+    backgroundColor: "lightgreen",
   },
 });

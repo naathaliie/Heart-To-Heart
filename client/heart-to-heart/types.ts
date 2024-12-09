@@ -34,3 +34,9 @@ export type Question = {
   questionText: string;
   categoryType: string;
 };
+
+/*****OTHER TYPES*****/
+export type Options = {
+  title: string;
+  screen: string;
+};

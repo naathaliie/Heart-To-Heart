@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "../redux/userSlice";
-import currentUserReducer from "../redux/currentUserSlice";
-import categoryReducer from "../redux/categorySlice";
-import levelReducer from "../redux/levelSlice";
-import currentLevelReducer from "../redux/currentLevel";
+import userReducer from "./userSlice";
+import currentUserReducer from "./currentUserSlice";
+import categoryReducer from "./categorySlice";
+import levelReducer from "./levelSlice";
+import currentLevelReducer from "./currentLevel";
+import currentCategoryReducer from "./currentCategory";
+import questionReducer from "./questionSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     levels: levelReducer,
     currentLevel: currentLevelReducer,
     categories: categoryReducer,
+    currentCategory: currentCategoryReducer,
+    questions: questionReducer,
   },
 });
 

@@ -28,18 +28,27 @@ export const addNewUser = createAsyncThunk(
 );
 
 /*****LEVELS*****/
-//Hämta alla categories
+//Hämta alla levels
 export const fetchLevels = createAsyncThunk("levels/fetchLevels", async () => {
   const response = await axios.get(`http://${currentIP}:3003/levels`);
   return response.data; // Data som returnerades ifrån API
 });
 
 /*****CATEGORIES*****/
-//Hämta alla categories
 export const fetchCategories = createAsyncThunk(
   "categories/fetchCategories",
   async () => {
     const response = await axios.get(`http://${currentIP}:3003/categories`);
+    return response.data; // Data som returnerades ifrån API
+  }
+);
+
+/*****QUESTIONS*****/
+//Hämta alla questions
+export const fetchQuestions = createAsyncThunk(
+  "questions/fetchquestions",
+  async () => {
+    const response = await axios.get(`http://${currentIP}:3003/questions`);
     return response.data; // Data som returnerades ifrån API
   }
 );

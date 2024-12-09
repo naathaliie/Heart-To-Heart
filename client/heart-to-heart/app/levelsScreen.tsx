@@ -36,7 +36,7 @@ export default function LevelsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>categoryscreen</Text>
+      <Text>Levlescreen</Text>
 
       <View>
         <Text>Här ska alla nivåer synas</Text>

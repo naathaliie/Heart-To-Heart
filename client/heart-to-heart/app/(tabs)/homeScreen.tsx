@@ -37,7 +37,7 @@ export default function HomeScreen() {
     }
 
     //Om vi har fått några kategorier och att currentlevel har en vald level
-    if (categories.length > 0 && currentLevel.currentLevel?.level) {
+    if (categories.length > 0 && currentLevel.currentLevel) {
       const currentCategories = categories.filter((c) => {
         return currentLevel.currentLevel?.level === c.levelType;
       });
@@ -69,6 +69,7 @@ export default function HomeScreen() {
               onPress={() => {
                 dispatch(updateCurrentCategory(c));
                 //navigera till questionScreen
+                console.log("vald kategori= ", c.title);
                 router.push("/questionScreen");
               }}
               style={styles.btn}

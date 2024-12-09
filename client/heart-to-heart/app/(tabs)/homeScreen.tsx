@@ -6,6 +6,7 @@ import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "expo-router";
 
 export default function HomeScreen() {
   //Spara vald nivås kategorier
@@ -63,7 +64,8 @@ export default function HomeScreen() {
         <Text>Här ska alla kategorier synas</Text>
         {filteredCategories?.map((c) => {
           return (
-            <Pressable
+            //Gå till questionScreen och skicka med vald kategori
+            <Link
               key={c._id}
               onPress={() => {
                 dispatch(updateCurrentCategory(c));
@@ -71,7 +73,7 @@ export default function HomeScreen() {
               style={styles.btn}
             >
               <Text>{c.title}</Text>
-            </Pressable>
+            </Link>
           );
         })}
       </View>

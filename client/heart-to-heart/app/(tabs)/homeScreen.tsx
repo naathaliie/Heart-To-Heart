@@ -3,9 +3,12 @@ import { updateCurrentCategory } from "@/redux/currentCategory";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Category } from "@/types";
 import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "expo-router";
+import PrimaryBtn from "@/components/primaryBtn";
+import fonts from "../../styles/fonts.js";
+import colors from "../../styles/colors.js";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -28,6 +31,13 @@ export default function HomeScreen() {
   const { categories, loading, error } = useSelector(
     (state: RootState) => state.categories
   );
+
+  function handleOnPress(oneCategory: Category) {
+    dispatch(updateCurrentCategory(oneCategory));
+    //navigera till questionScreen
+    console.log("vald kategori= ", oneCategory.title);
+    router.push("/questionScreen");
+  }
 
   // Hämta alla kategorier när komponenten renderas första gången
   useEffect(() => {
@@ -55,27 +65,20 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>
-        Homescreen och du loggade in som: {currentUser.currentUser?.username}{" "}
-        med vald nivå: {currentLevel.currentLevel?.level}
-      </Text>
+      <View style={styles.textBox}>
+        <Text style={{ fontSize: fonts.fontSizes.large }}>Välj kategori</Text>
+      </View>
 
-      <View>
-        <Text>Här ska alla kategorier synas</Text>
+      <View style={styles.categoriesBox}>
         {filteredCategories?.map((c) => {
           return (
-            <Pressable
+            <PrimaryBtn
               key={c._id}
-              onPress={() => {
-                dispatch(updateCurrentCategory(c));
-                //navigera till questionScreen
-                console.log("vald kategori= ", c.title);
-                router.push("/questionScreen");
-              }}
-              style={styles.btn}
-            >
-              <Text>{c.title}</Text>
-            </Pressable>
+              title={c.title}
+              color="dustyCherryDark"
+              size="big"
+              onPress={() => handleOnPress(c)}
+            />
           );
         })}
       </View>
@@ -85,10 +88,13 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.myBackground,
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
   },
+  textBox: {},
+  categoriesBox: {},
   btn: {
     backgroundColor: "#08AEAD",
     borderWidth: 1,

@@ -1,10 +1,58 @@
 import { useRouter } from "expo-router";
-import { Pressable, StatusBar, StyleSheet, Text, View } from "react-native";
+import { StatusBar, StyleSheet, Text, View } from "react-native";
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import ShadowsIntoLight from "../assets/fonts/ShadowsIntoLight-Regular.ttf";
+import CaveatBrushRegular from "../assets/fonts/CaveatBrush-Regular.ttf";
+import { useEffect, useState } from "react";
 import { Image } from "expo-image";
+
+//Antalet sekunder innan man går vidare
+const seconds = 3000;
+
 export default function Index() {
   //Komma åt routern
   const router = useRouter();
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [timeoutReached, setTimeoutReached] = useState(false); // Håller koll på om seconds sekunder har passerat
 
+  //Effect för att ladda fonts
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync(); // Förhindrar att splash screen försvinner för tidigt
+
+    // Funktion för att ladda fonter
+    async function loadFonts() {
+      try {
+        await Font.loadAsync({
+          ShadowsIntoLight: ShadowsIntoLight,
+          CaveatBrushRegular: CaveatBrushRegular,
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setFontsLoaded(true); // Fonten har laddats
+      }
+    }
+
+    loadFonts();
+
+    // Timer för att säkerställa att splashscreen visas i minst seconds sekunder
+    const timer = setTimeout(() => {
+      setTimeoutReached(true); // Sätt timeoutReached till true efter seconds sekunder
+    }, seconds); // 5 sekunder
+
+    return () => clearTimeout(timer); // Rensa timern när komponenten unmountas
+  }, []);
+
+  useEffect(() => {
+    // När både fonten är laddad och den minsta tiden har gått (seconds sek)
+    if (fontsLoaded && timeoutReached) {
+      SplashScreen.hideAsync(); // Dölj splash screen
+      router.replace("/loginScreen"); // Navigera automatiskt till login screen
+    }
+  }, [fontsLoaded, timeoutReached, router]);
+
+  // Det som visas medan fonten laddas och/eller innan det gått seconds sek
   return (
     <View style={styles.container}>
       <StatusBar barStyle={"dark-content"} backgroundColor={"#352D30"} />
@@ -14,14 +62,8 @@ export default function Index() {
         contentFit="cover"
         allowDownscaling={true}
       />
-      <Pressable
-        style={styles.btn}
-        onPress={() => {
-          router.replace("/loginScreen");
-        }}
-      >
-        <Text style={styles.btnText}>Gå till appen</Text>
-      </Pressable>
+
+      <Text style={styles.text}>Välommen</Text>
     </View>
   );
 }
@@ -40,17 +82,13 @@ const styles = StyleSheet.create({
     position: "absolute", // Gör att bilden fyller hela skärme
     backgroundColor: "#0553",
   },
-  btn: {
-    backgroundColor: "#08AEAD",
-    borderWidth: 1,
-    borderColor: "#ffffff",
-    borderRadius: 20,
-    padding: 10,
-    marginTop: 500,
-  },
-  btnText: {
+
+  text: {
     color: "white",
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
+    backgroundColor: "black",
+    padding: 15,
+    borderRadius: 20,
   },
 });

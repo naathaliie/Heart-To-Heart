@@ -1,6 +1,8 @@
+import PrimaryBtn from "@/components/primaryBtn";
 import { Options } from "@/types";
-import { Link, useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { StyleSheet, Text, View } from "react-native";
+import colors from "../../styles/colors.js";
 
 export default function MyPage() {
   const router = useRouter();
@@ -16,16 +18,24 @@ export default function MyPage() {
     },
     { title: "Egna frågor", screen: "/customQuestions" },
   ];
+
+  //hanter när man klickar på ett val
+  function handlePress(thisOptionsScreen: String) {
+    router.push(thisOptionsScreen);
+  }
+
   return (
     <View style={styles.container}>
-      <Text>MyPage</Text>
-
       <View>
         {options.map((option, index) => {
           return (
-            <Link href={option.screen} key={index} style={styles.btn}>
-              <Text>{option.title}</Text>
-            </Link>
+            <PrimaryBtn
+              key={index}
+              title={option.title}
+              onPress={() => handlePress(option.screen)}
+              color="dustyCherryDark"
+              size="big"
+            />
           );
         })}
       </View>
@@ -35,6 +45,7 @@ export default function MyPage() {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.myBackground,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

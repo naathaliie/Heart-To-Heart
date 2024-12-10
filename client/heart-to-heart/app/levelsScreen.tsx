@@ -78,19 +78,6 @@ export default function LevelsScreen() {
           color="deliciousGreen"
           size="big"
         />
-        {/*  <Pressable
-          style={styles.btn}
-          onPress={() => {
-            // Dispatcha action för att uppdatera currentUser i Redux
-            if (choosedLevel) {
-              dispatch(updateCurrentLevel(choosedLevel)); // Uppdaterar Redux store med den valda nivån
-            }
-
-            router.replace("/(tabs)/homeScreen");
-          }}
-        >
-          <Text>Välj kategori och gå viadre</Text>
-        </Pressable> */}
       </View>
     </View>
   );

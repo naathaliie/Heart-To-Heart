@@ -14,6 +14,7 @@ export default function TabsLayout() {
         },
         headerShadowVisible: false,
         headerTintColor: colors.silver,
+        headerTitleAlign: "center",
         tabBarStyle: {
           backgroundColor: colors.dustyCherry,
         },
@@ -24,7 +25,6 @@ export default function TabsLayout() {
         options={{
           headerTitle: "Hjärta till Hjärta",
           headerTitleStyle: { fontFamily: "Roboto" }, //FUNGEAR EJ:(
-          headerTitleAlign: "center",
           tabBarIcon: ({ focused, color }) => (
             <Ionicons
               name={focused ? "home" : "home-outline"}
@@ -37,7 +37,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="myPage"
         options={{
-          headerTitle: "Min sida",
+          headerTitle: "Mina sidor",
           tabBarIcon: ({ focused, color }) => (
             <Ionicons
               name={focused ? "person" : "person-outline"}

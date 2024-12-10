@@ -1,11 +1,12 @@
 import { AppDispatch, RootState } from "@/redux/store";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchLevels } from "@/API/api";
 import { updateCurrentLevel } from "@/redux/currentLevel";
-import { Level } from "@/types";
+import PrimaryBtn from "@/components/primaryBtn";
+import colors from "../styles/colors.js";
 
 export default function LevelsScreen() {
   const router = useRouter();
@@ -34,29 +35,25 @@ export default function LevelsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>Levlescreen</Text>
-
       <View>
-        <Text>Nuvarande nivå är: {currentlevel.currentLevel?.level}</Text>
+        <Text>Här kan du ändra vald nivå</Text>
       </View>
 
       <View>
         {levels.map((level) => {
           return (
-            <Pressable
+            <PrimaryBtn
               key={level._id}
-              onPress={() => {
-                dispatch(updateCurrentLevel(level)); // Uppdaterar Redux store med den valda nivån
-              }}
-              style={styles.btnPlum}
-            >
-              <Text>{level.level}</Text>
-            </Pressable>
+              title={level.level}
+              onPress={() => dispatch(updateCurrentLevel(level))}
+              color="dustyCherryDark"
+              size="big"
+            />
           );
         })}
       </View>
       <View>
-        <Text>vald nivå {}</Text>
+        <Text>Nuvarande nivå: {currentlevel.currentLevel?.level}</Text>
       </View>
     </View>
   );
@@ -64,6 +61,7 @@ export default function LevelsScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.myBackground,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

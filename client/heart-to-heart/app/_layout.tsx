@@ -11,7 +11,16 @@ export default function RootLayout() {
         barStyle="light-content"
         backgroundColor={colors.dustyCherry}
       />
-      <Stack>
+      <Stack
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: colors.dustyCherry,
+          },
+          headerShadowVisible: false,
+          headerTintColor: colors.silver,
+          headerTitleAlign: "center",
+        }}
+      >
         <Stack.Screen
           name="index"
           options={{
@@ -40,6 +49,18 @@ export default function RootLayout() {
           name="changeLevel"
           options={{
             headerTitle: "Ändra nivå",
+          }}
+        />
+        <Stack.Screen
+          name="favoriteQuestions"
+          options={{
+            headerTitle: "Mina favorit frågor",
+          }}
+        />
+        <Stack.Screen
+          name="customQuestions"
+          options={{
+            headerTitle: "Skapa egna frågor",
           }}
         />
         <Stack.Screen

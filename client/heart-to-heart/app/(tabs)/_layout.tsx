@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import colors from "../../styles/colors.js";
+import fonts from "../../styles/fonts.js";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function TabsLayout() {
@@ -22,6 +23,7 @@ export default function TabsLayout() {
         name="homeScreen"
         options={{
           headerTitle: "Hjärta till Hjärta",
+          headerTitleStyle: { fontFamily: "Roboto" }, //FUNGEAR EJ:(
           headerTitleAlign: "center",
           tabBarIcon: ({ focused, color }) => (
             <Ionicons

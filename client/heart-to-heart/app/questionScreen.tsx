@@ -3,9 +3,11 @@ import QuestionCard from "@/components/questionCard";
 import { AppDispatch, RootState } from "@/redux/store";
 import { Question } from "@/types";
 import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Swiper from "react-native-swiper";
+import colors from "../styles/colors.js";
+import fonts from "../styles/fonts.js";
 
 export default function QuestionScreen() {
   const testQuestions = [
@@ -67,15 +69,31 @@ export default function QuestionScreen() {
   if (relevantQuestions?.length !== undefined) {
     return (
       <View style={styles.container}>
-        <Text>Hej från questionsScreen</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>
+            {currentCategory.currentCategory?.title}
+          </Text>
+        </View>
 
         <Swiper
           key={relevantQuestions.length}
           style={styles.wrapper}
           showsButtons={true}
+          nextButton={
+            <Text style={{ color: colors.dustyCherry_Dark, fontSize: 50 }}>
+              ›
+            </Text>
+          }
+          prevButton={
+            <Text style={{ color: colors.dustyCherry_Dark, fontSize: 50 }}>
+              ‹
+            </Text>
+          }
+          dotColor={colors.dustyCherry_Dark} // Färg för inaktiva pluppar
+          activeDotColor={colors.deliciousGreen} // Färg för aktiva pluppar
         >
           {relevantQuestions.map((question, index) => (
-            <QuestionCard oneQuestion={question} />
+            <QuestionCard key={index} oneQuestion={question} />
           ))}
         </Swiper>
       </View>
@@ -91,10 +109,19 @@ export default function QuestionScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.myBackground,
+
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     padding: 10,
   },
+  textContainer: {
+    marginTop: 40,
+  },
   wrapper: {},
+  text: {
+    fontSize: fonts.fontSizes.medium,
+    color: colors.myBlack,
+  },
 });

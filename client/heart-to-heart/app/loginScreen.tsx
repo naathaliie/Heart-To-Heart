@@ -109,18 +109,6 @@ export default function loginScreen() {
             color="deliciousGreen"
             size="big"
           />
-          {/* <Pressable
-            style={styles.btn}
-            onPress={() => {
-              // Dispatcha action för att uppdatera currentUser i Redux
-              if (chossedProfile) {
-                dispatch(updateCurrentUser(chossedProfile)); // Uppdaterar Redux store med den valda användaren
-              }
-              router.replace("/levelsScreen");
-            }}
-          >
-            <Text style={styles.btnText}>Gå till appen</Text>
-          </Pressable> */}
         </View>
 
         {/* KANSKE EN MODAL AV NEDAN? */}

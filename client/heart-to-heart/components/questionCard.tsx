@@ -1,14 +1,32 @@
 import { Question } from "@/types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import colors from "../styles/colors.js";
+import fonts from "../styles/fonts.js";
+import { useState } from "react";
 
 type QuestionCardProps = {
   oneQuestion: Question;
+  liked: boolean;
 };
 
-export default function QuestionCard({ oneQuestion }: QuestionCardProps) {
+export default function QuestionCard({
+  oneQuestion,
+  liked,
+}: QuestionCardProps) {
+  //Toggla favorit
+  const [like, setLike] = useState<boolean>(false);
+
   return (
     <View style={styles.container}>
-      <View style={styles.likeBox}></View>
+      <View style={styles.likeBox}>
+        <Pressable
+          onPress={() => {
+            setLike(!like);
+          }}
+        >
+          <Text>{like ? "❤️" : "🤍"}</Text>
+        </Pressable>
+      </View>
 
       <View style={styles.questionBox}>
         <Text style={styles.text}>{oneQuestion.questionText}</Text>
@@ -21,19 +39,26 @@ const styles = StyleSheet.create({
   container: {
     position: "absolute",
     top: "20%",
-    right: "17%",
-    width: "65%",
+    right: "12%",
+    width: "75%",
     height: "55%",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    backgroundColor: "plum",
+    borderColor: colors.silver,
+    backgroundColor: colors.dustyCherry_Dark,
     borderRadius: 20,
     padding: 20,
   },
+  likeBox: {
+    position: "absolute",
+    top: 20,
+    right: 10,
+  },
   text: {
     textAlign: "center",
+    color: colors.silver,
+    fontSize: fonts.fontSizes.medium,
   },
-  likeBox: {},
   questionBox: {},
 });

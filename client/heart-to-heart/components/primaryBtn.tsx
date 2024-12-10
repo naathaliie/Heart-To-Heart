@@ -2,15 +2,13 @@ import { View, Text, Pressable, StyleSheet } from "react-native";
 import colors from "../styles/colors.js";
 
 type PrimaryBtnProps = {
-  key?: string;
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
   color: "dustyCherryDark" | "deliciousGreen";
   size: "small" | "big";
 };
 
 export default function PrimaryBtn({
-  key,
   title,
   onPress,
   color,
@@ -19,12 +17,14 @@ export default function PrimaryBtn({
   //Stil baserat på props
   const btnStyle = [styles.btnBase, styles[color], styles[size]];
 
+  //Om ingen onPress skickats med
+  function defaultFunction() {
+    console.log("Ingen onPress-funktion medskickad");
+  }
+
   return (
     <Pressable
-      key={key}
-      onPress={() => {
-        onPress();
-      }}
+      onPress={onPress ? () => onPress() : () => defaultFunction()}
       style={btnStyle}
     >
       <Text style={styles.text}>{title}</Text>

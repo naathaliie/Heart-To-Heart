@@ -5,7 +5,8 @@ const colors = {
     deliciousGreen: "#94C480",
     velvet: "#E87788",
     silver: "#F8F8F8",
-    myBlack: "#2B2B2B"
+    myBlack: "#2B2B2B",
+    myBackground: "#EDDDDF",
 
 };
 

@@ -9,12 +9,12 @@ export default function RootLayout() {
     <Provider store={store}>
       <StatusBar
         barStyle="light-content"
-        backgroundColor={colors.dustyCherry}
+        backgroundColor={colors.dustyCherry_Dark}
       />
       <Stack
         screenOptions={{
           headerStyle: {
-            backgroundColor: colors.dustyCherry,
+            backgroundColor: colors.dustyCherry_Dark,
           },
           headerShadowVisible: false,
           headerTintColor: colors.silver,
@@ -43,6 +43,12 @@ export default function RootLayout() {
           name="(tabs)"
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="questionScreen"
+          options={{
+            headerTitle: "",
           }}
         />
         <Stack.Screen

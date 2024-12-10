@@ -24,6 +24,7 @@ export default function TabsLayout() {
         name="homeScreen"
         options={{
           headerTitle: "Hjärta till Hjärta",
+          tabBarLabel: "Hem",
           headerTitleStyle: { fontFamily: "Roboto" }, //FUNGEAR EJ:(
           tabBarIcon: ({ focused, color }) => (
             <Ionicons
@@ -38,6 +39,7 @@ export default function TabsLayout() {
         name="myPage"
         options={{
           headerTitle: "Mina sidor",
+          tabBarLabel: "Mina sidor",
           tabBarIcon: ({ focused, color }) => (
             <Ionicons
               name={focused ? "person" : "person-outline"}

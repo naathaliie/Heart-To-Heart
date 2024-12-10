@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { fetchLevels } from "@/API/api";
 import { updateCurrentLevel } from "@/redux/currentLevel";
 import { Level } from "@/types";
+import PrimaryBtn from "@/components/primaryBtn";
+import fonts from "../styles/fonts.js";
 
 export default function LevelsScreen() {
   const router = useRouter();
@@ -20,6 +22,16 @@ export default function LevelsScreen() {
   useEffect(() => {
     dispatch(fetchLevels());
   }, [dispatch]);
+
+  //hantera knappen gå vidare
+  function handleGoToNext() {
+    // Dispatcha action för att uppdatera currentUser i Redux
+    if (choosedLevel) {
+      dispatch(updateCurrentLevel(choosedLevel)); // Uppdaterar Redux store med den valda nivån
+    }
+
+    router.replace("/(tabs)/homeScreen");
+  }
 
   // Hämta levels från Redux
   const { levels, loading, error } = useSelector(
@@ -36,24 +48,22 @@ export default function LevelsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>Levlescreen</Text>
-
       <View>
-        <Text>Här ska alla nivåer synas</Text>
+        <Text style={{ fontSize: fonts.fontSizes.medium }}>
+          Anpassa innehållet efter ålder
+        </Text>
       </View>
 
       <View>
         {levels.map((level) => {
           return (
-            <Pressable
+            <PrimaryBtn
               key={level._id}
-              onPress={() => {
-                setChoosedLevel(level);
-              }}
-              style={styles.btnPlum}
-            >
-              <Text>{level.level}</Text>
-            </Pressable>
+              title={level.level}
+              onPress={() => setChoosedLevel(level)}
+              color="dustyCherryDark"
+              size="big"
+            />
           );
         })}
       </View>
@@ -62,7 +72,13 @@ export default function LevelsScreen() {
       </View>
 
       <View>
-        <Pressable
+        <PrimaryBtn
+          title="Välj kategori och gå viadre"
+          onPress={() => handleGoToNext()}
+          color="deliciousGreen"
+          size="big"
+        />
+        {/*  <Pressable
           style={styles.btn}
           onPress={() => {
             // Dispatcha action för att uppdatera currentUser i Redux
@@ -74,7 +90,7 @@ export default function LevelsScreen() {
           }}
         >
           <Text>Välj kategori och gå viadre</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
     </View>
   );
@@ -83,7 +99,7 @@ export default function LevelsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
   },
   btn: {

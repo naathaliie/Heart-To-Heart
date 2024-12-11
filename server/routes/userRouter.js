@@ -3,6 +3,8 @@ import Express from "express";
 import { zodUserSchema } from "../zodSchemas/zodUserSchema.js";
 import { userModel } from "../dataBase/mongooseModels/userModel.js";
 import jwt from 'jsonwebtoken'; // Importera jsonwebtoken
+import  Mongoose  from "mongoose";
+import { questionModel } from "../dataBase/mongooseModels/questionModel.js";
 
 // Ladda miljövariabler från .env-filen
 dotenv.config();
@@ -82,6 +84,46 @@ router.post("/login", async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Serverfel vid inloggning", error: error.message });
     }
+});
+
+//Lägga till en gillad fråga till en användare
+router.post("/:userId/likedQuestions", async (req, res) => {
+   
+    const {userId} = req.params;  //Hämta användarens ID från URL:en
+    const { questionId } = req.body; // Hämta frågans ID från request-body
+
+    //Kontrollera att questionId är ett giltigt ObjectId
+    if (!Mongoose.Types.ObjectId.isValid(questionId)) {
+        return res.status(400).json({ message: "Ogiltigt question-ID" });
+    }
+
+    try {
+        // Kontrollera om frågan existerar
+        const questionExists = await questionModel.findById(questionId);
+        if (!questionExists) {
+            return res.status(404).json({ message: "Frågan hittades inte" });
+        }
+
+        // Hitta användaren i databasen
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "Användaren hittades inte" });
+        }
+
+        // Kontrollera om frågan redan är gillad
+        if (user.likedQuestions.includes(questionId)) {
+            return res.status(400).json({ message: "Frågan är redan gillad av användaren" });
+        }
+
+        // Lägg till frågans ID till användarens `likedQuestions`
+        user.likedQuestions.push(questionId);
+        await user.save(); // Spara ändringarna i databasen
+
+        res.status(200).json({ message: "Frågan har lagts till i gillade frågor", user });
+    } catch (error) {
+        console.error("Error adding liked question:", error);
+        res.status(500).json({ message: "Ett serverfel inträffade", error: error.message });    }
+  
 });
 
 //Se en användares gillade frågor

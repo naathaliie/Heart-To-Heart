@@ -5,6 +5,7 @@ import { userModel } from "../dataBase/mongooseModels/userModel.js";
 import jwt from 'jsonwebtoken'; // Importera jsonwebtoken
 import  Mongoose  from "mongoose";
 import { questionModel } from "../dataBase/mongooseModels/questionModel.js";
+import { zodQuestionSchema } from "../zodSchemas/zodQuestionSchema.js";
 
 // Ladda miljövariabler från .env-filen
 dotenv.config();
@@ -88,19 +89,26 @@ router.post("/login", async (req, res) => {
 
 //Lägga till en gillad fråga till en användare
 router.post("/:userId/likedQuestions", async (req, res) => {
-   
-    const {userId} = req.params;  //Hämta användarens ID från URL:en
-    const { questionId } = req.body; // Hämta frågans ID från request-body
+    const { userId } = req.params; // Hämta användarens ID från URL:en
+    const question = req.body; // Förvänta att hela frågeobjektet skickas i body
+    console.log("FRÅN USERROUTER, MEDSKICKAD FRÅGA", req.body);
+    console.log("FRÅN USERROUTER, MEDSKICKAD USER", userId);
 
-    //Kontrollera att questionId är ett giltigt ObjectId
-    if (!Mongoose.Types.ObjectId.isValid(questionId)) {
-        return res.status(400).json({ message: "Ogiltigt question-ID" });
+
+    // Validera frågeobjektet med Zod
+    const zodResult = zodQuestionSchema.safeParse(question);
+
+    if (!zodResult.success) {
+        return res.status(400).json({
+            message: "Zod-validering misslyckades",
+            errors: zodResult.error.errors,
+        });
     }
 
     try {
-        // Kontrollera om frågan existerar
-        const questionExists = await questionModel.findById(questionId);
-        if (!questionExists) {
+        // Hitta frågan i databasen baserat på _id
+        const existingQuestion = await questionModel.findById(question._id);
+        if (!existingQuestion) {
             return res.status(404).json({ message: "Frågan hittades inte" });
         }
 
@@ -111,63 +119,61 @@ router.post("/:userId/likedQuestions", async (req, res) => {
         }
 
         // Kontrollera om frågan redan är gillad
-        if (user.likedQuestions.includes(questionId)) {
+        if (user.likedQuestions.some(q => q._id.toString() === question._id)) {
             return res.status(400).json({ message: "Frågan är redan gillad av användaren" });
         }
 
-        // Lägg till frågans ID till användarens `likedQuestions`
-        user.likedQuestions.push(questionId);
+        // Lägg till frågan i `likedQuestions`
+        user.likedQuestions.push({
+            _id: existingQuestion._id,
+            questionText: existingQuestion.questionText,
+            categoryType: existingQuestion.categoryType
+        });
+
         await user.save(); // Spara ändringarna i databasen
 
         res.status(200).json({ message: "Frågan har lagts till i gillade frågor", user });
     } catch (error) {
         console.error("Error adding liked question:", error);
-        res.status(500).json({ message: "Ett serverfel inträffade", error: error.message });    }
-  
+        res.status(500).json({ message: "Ett serverfel inträffade", error: error.message });
+    }
 });
 
-//Ta bort en gillad fråga
-router.delete("/:userId/likedQuestions", async (req, res) => {
-    const {userId} = req.params;  //Hämta användarens ID från URL:en
-    const { questionId } = req.body; // Hämta frågans ID från request-body
 
-    //Kontrollera att questionId är ett giltigt ObjectId
+// Ta bort en gillad fråga
+router.delete("/:userId/likedQuestions/:questionId", async (req, res) => {
+    const { userId, questionId } = req.params;
+
+    // Kontrollera att questionId är ett giltigt ObjectId
     if (!Mongoose.Types.ObjectId.isValid(questionId)) {
         return res.status(400).json({ message: "Ogiltigt question-ID" });
     }
 
     try {
-        // Kontrollera om frågan existerar
-        const questionExists = await questionModel.findById(questionId);
-        if (!questionExists) {
-            return res.status(404).json({ message: "Frågan hittades inte" });
-        }
-
-        // Hitta användaren i databasen
         const user = await userModel.findById(userId);
         if (!user) {
             return res.status(404).json({ message: "Användaren hittades inte" });
         }
 
-         // Kontrollera om frågan är gillad av användaren
-         if (!user.likedQuestions.includes(questionId)) {
+        // Filtrera bort frågan baserat på dess _id
+        const initialLength = user.likedQuestions.length;
+        user.likedQuestions = user.likedQuestions.filter(q => q._id.toString() !== questionId);
+
+        if (user.likedQuestions.length === initialLength) {
             return res.status(400).json({ message: "Frågan är inte gillad av användaren" });
         }
 
-        console.log("Användarens gillade frågor före borttagning: ", user.likedQuestions);
-        //filtrera bort frågan från likedQuestions
-        user.likedQuestions = user.likedQuestions.filter((q) => {return q._id.toString() !== questionId});
-        console.log("Användarens gillade frågor efter borttagning: ", user.likedQuestions);
+        await user.save(); // Spara ändringarna i databasen
 
-        // Spara ändringarna i databasen
-        await user.save();
-
-        res.status(200).json({ message: "Frågan har tagits bort från gillade frågor", user });  
+        res.status(200).json({ message: "Frågan har tagits bort från gillade frågor", user });
     } catch (error) {
-        console.error("Error adding liked question:", error);
-        res.status(500).json({ message: "Ett serverfel inträffade", error: error.message });    }
+        console.error("Error removing liked question:", error);
+        res.status(500).json({ message: "Ett serverfel inträffade", error: error.message });
+    }
+});
+
   
-})
+  
 
 //Se en användares gillade frågor
 router.get("/:userId/likedQuestions", async (req, res) => {
@@ -184,34 +190,6 @@ router.get("/:userId/likedQuestions", async (req, res) => {
         console.error("Error fetching liked questions:", error);
         res.status(500).json({ message: "Serverfel vid hämtning av gillade frågor", error: error.message });
     }
-});
-
-
-// Lägg till en gillad fråga till en specifik användare
-router.post("/:userId/likeQuestion", async (req, res) => {
-    const { userId } = req.params; // Hämta användarens ID från URL:en
-    const { questionId } = req.body; // Hämta frågans ID från request-body
-
-try {
-    // Hitta användaren i databasen
-    const user = await userModel.findById(userId);
-    if (!user) {
-        return res.status(404).json({ message: "Användaren hittades inte" });
-    }
-
-    // Kontrollera om frågan redan är gillad
-    if (user.likedQuestions.includes(questionId)) {
-        return res.status(400).json({ message: "Frågan är redan gillad av användaren" });
-    }
-
-    // Lägg till frågans ID till användarens `likedQuestions`
-    user.likedQuestions.push(questionId);
-    await user.save(); // Spara ändringarna i databasen
-
-    res.status(200).json({ message: "Frågan har lagts till i gillade frågor", user });
-} catch (error) {
-    res.status(500).json({ message: "Ett serverfel inträffade", error: error.message });
-}
 });
 
     return router;

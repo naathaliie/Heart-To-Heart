@@ -1,4 +1,9 @@
-import { addNewUser, fetchUsers } from "@/API/api";
+import {
+  addLikedQuestion,
+  addNewUser,
+  deleteLikedQuestion,
+  fetchUsers,
+} from "@/API/api";
 import { User } from "@/types";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -26,6 +31,26 @@ const usersSlice = createSlice({
       })
       .addCase(addNewUser.fulfilled, (state, action) => {
         state.users.push(action.payload);
+      })
+      .addCase(addLikedQuestion.fulfilled, (state, action) => {
+        const { userId, newFavoritQuestion } = action.payload;
+        const user = state.users.find((user) => user._id === userId);
+        if (user) {
+          // Lägg till frågan i användarens likedQuestions
+          user.likedQuestions.push(newFavoritQuestion);
+        }
+      })
+      .addCase(deleteLikedQuestion.fulfilled, (state, action) => {
+        // Hitta användaren som blev uppdaterad och ta bort frågan från likedQuestions
+        state.users = state.users.map((user) => {
+          if (user._id === action.payload._id) {
+            // Ta bort den borttagna frågan från användarens likedQuestions
+            user.likedQuestions = user.likedQuestions.filter(
+              (question) => question._id !== action.payload.questionId
+            );
+          }
+          return user;
+        });
       });
   },
 });

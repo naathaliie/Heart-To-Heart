@@ -1,4 +1,4 @@
-import { NewUser } from "@/types";
+import { NewLike, NewUser, Question } from "@/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -19,11 +19,50 @@ export const addNewUser = createAsyncThunk(
       `http://${currentIP}:3003/users/signup`,
       newUser
     );
-    console.log(
-      "response.data alltså den nya användaren ser nu ut så här: ",
-      response.data
-    );
     return response.data; // Returnera den nya användaren
+  }
+);
+//Lägg till en gillad fråga
+export const addLikedQuestion = createAsyncThunk(
+  "users/addNewLike",
+  async ({
+    userId,
+    newFavoritQuestion,
+  }: {
+    userId: string;
+    newFavoritQuestion: Question;
+  }) => {
+    // Logga frågeobjektet och userId som skickas till backend
+    console.log("Fråga som skickas till backend:", newFavoritQuestion);
+    console.log("UserId som skickas till backend:", userId);
+
+    //HÄR GÅR DET FEL
+    try {
+      const response = await axios.post(
+        `http://${currentIP}:3003/users/${userId}/likedQuestions`,
+        newFavoritQuestion // Skicka hela frågeobjektet
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error adding liked question:", error);
+      throw error;
+    }
+  }
+);
+
+//Ta bort en gillad fråga
+export const deleteLikedQuestion = createAsyncThunk(
+  "users/deleteLike",
+  async ({ userId, questionId }: { userId: string; questionId: string }) => {
+    try {
+      const response = await axios.delete(
+        `http://${currentIP}:3003/user/${userId}/likedQuestions/${questionId}` // Skickar questionId i URL
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting liked question:", error);
+      throw error;
+    }
   }
 );
 

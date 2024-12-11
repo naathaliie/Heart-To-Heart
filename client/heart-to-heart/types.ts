@@ -2,8 +2,8 @@
 export type User = {
   _id: string;
   username: string;
-  likedQuestions: [];
-  createdQuestions: [];
+  likedQuestions: Question[];
+  createdQuestions: Question[];
 };
 
 //NewUsers id genereras av MongoDB NÄR en ny användare skapas
@@ -11,6 +11,10 @@ export type NewUser = {
   username: string;
   likedQuestions: [];
   createdQuestions: [];
+};
+
+export type NewLike = {
+  _id: string;
 };
 
 /*****LEVELS*****/

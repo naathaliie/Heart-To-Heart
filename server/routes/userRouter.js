@@ -84,5 +84,50 @@ router.post("/login", async (req, res) => {
     }
 });
 
+//Se en användares gillade frågor
+router.get("/:userId/likedQuestions", async (req, res) => {
+    const {userId} = req.params; // Hämta användarens ID från URL:en
+    try {
+        // Hitta användaren och populera likedQuestions (populate innebär att du hämtar något från ett dokument)
+        const user = await userModel.findById(userId).populate("likedQuestions");
+        if (!user) {
+            return res.status(404).json({ message: "Användaren hittades inte" });
+        }
+        // Skicka tillbaka de gillade frågorna
+        res.status(200).json(user.likedQuestions);
+    } catch (error) {
+        console.error("Error fetching liked questions:", error);
+        res.status(500).json({ message: "Serverfel vid hämtning av gillade frågor", error: error.message });
+    }
+});
+
+
+// Lägg till en gillad fråga till en specifik användare
+router.post("/:userId/likeQuestion", async (req, res) => {
+    const { userId } = req.params; // Hämta användarens ID från URL:en
+    const { questionId } = req.body; // Hämta frågans ID från request-body
+
+try {
+    // Hitta användaren i databasen
+    const user = await userModel.findById(userId);
+    if (!user) {
+        return res.status(404).json({ message: "Användaren hittades inte" });
+    }
+
+    // Kontrollera om frågan redan är gillad
+    if (user.likedQuestions.includes(questionId)) {
+        return res.status(400).json({ message: "Frågan är redan gillad av användaren" });
+    }
+
+    // Lägg till frågans ID till användarens `likedQuestions`
+    user.likedQuestions.push(questionId);
+    await user.save(); // Spara ändringarna i databasen
+
+    res.status(200).json({ message: "Frågan har lagts till i gillade frågor", user });
+} catch (error) {
+    res.status(500).json({ message: "Ett serverfel inträffade", error: error.message });
+}
+});
+
     return router;
 };

@@ -9,8 +9,6 @@ export default function FavoriteQuestions() {
   //komma åt currentUser och all denns info
   const currentUser = useSelector((state: RootState) => state.currentUser);
 
-  console.log("CurrentUsers info= ", currentUser.currentUser?.likedQuestions);
-
   return (
     <View style={styles.container}>
       <View style={styles.textBox}>

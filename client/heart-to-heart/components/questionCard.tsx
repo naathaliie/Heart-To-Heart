@@ -26,14 +26,6 @@ export default function QuestionCard({ oneQuestion }: QuestionCardProps) {
         <Pressable
           onPress={() => {
             if (currentUser.currentUser) {
-              console.log("onEQuestion ser ut såhär: ", oneQuestion);
-              console.log("currentUser= ", currentUser.currentUser);
-              console.log(
-                "Dispatching addLikedQuestion with userId: ",
-                currentUser.currentUser?._id,
-                "and question: ",
-                oneQuestion
-              );
               dispatch(
                 addLikedQuestion({
                   userId: currentUser.currentUser?._id,

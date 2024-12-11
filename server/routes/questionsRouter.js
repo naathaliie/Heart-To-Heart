@@ -18,7 +18,7 @@ export function questionsRouter(){
         }
     });
 
-    // Lägg till ett nytt dokument i databasen
+    // Lägg till en ny fråga i databasen
     router.post("/", async (req, res) => {
         // Validera först med Zod INNAN datan skickas till databasen
         const zodResult = zodQuestionSchema.safeParse(req.body);
@@ -43,6 +43,8 @@ export function questionsRouter(){
             });
         }
     });
+
+    
 
     return router;
 };

@@ -36,7 +36,6 @@ export const addLikedQuestion = createAsyncThunk(
     console.log("Fråga som skickas till backend:", newFavoritQuestion);
     console.log("UserId som skickas till backend:", userId);
 
-    //HÄR GÅR DET FEL
     try {
       const response = await axios.post(
         `http://${currentIP}:3003/users/${userId}/likedQuestions`,
@@ -56,7 +55,7 @@ export const deleteLikedQuestion = createAsyncThunk(
   async ({ userId, questionId }: { userId: string; questionId: string }) => {
     try {
       const response = await axios.delete(
-        `http://${currentIP}:3003/user/${userId}/likedQuestions/${questionId}` // Skickar questionId i URL
+        `http://${currentIP}:3003/users/${userId}/likedQuestions/${questionId}` // Skickar questionId i URL
       );
       return response.data;
     } catch (error) {

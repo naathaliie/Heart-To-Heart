@@ -14,25 +14,54 @@ type QuestionCardProps = {
 export default function QuestionCard({ oneQuestion }: QuestionCardProps) {
   const dispatch = useDispatch<AppDispatch>();
 
-  //Toggla favorit
-  const [like, setLike] = useState<boolean>(false);
-
   //Komma åt currentUser
   const currentUser = useSelector((state: RootState) => state.currentUser);
+
+  // Toggla favorit-status (like) för att visa rött hjärta
+  const [like, setLike] = useState<boolean>(false);
+
+  // Lyssna på förändringar i likedQuestions och uppdatera like
+  useEffect(() => {
+    // Kolla om frågan finns i gillade frågor
+    const isLiked = currentUser.currentUser?.likedQuestions.some(
+      (item) => item._id === oneQuestion._id
+    );
+    setLike(isLiked || false); // Uppdatera like-statusen
+  }, [currentUser.currentUser?.likedQuestions, oneQuestion._id]); // När likedQuestions eller frågans _id förändras
+
+  // Hantera knapptryckning (lägg till eller ta bort fråga från gillade)
+  const handleLike = () => {
+    if (currentUser.currentUser) {
+      if (like) {
+        // Om frågan är gillad, ta bort den
+        console.log("Avmarkera frågan som gillad");
+        dispatch(
+          deleteLikedQuestion({
+            userId: currentUser.currentUser?._id,
+            questionId: oneQuestion._id,
+          })
+        );
+      } else {
+        // Om frågan inte är gillad, lägg till den
+        console.log("Markera frågan som gillad");
+        dispatch(
+          addLikedQuestion({
+            userId: currentUser.currentUser?._id,
+            newFavoritQuestion: oneQuestion,
+          })
+        );
+      }
+      // Uppdatera like-state
+      setLike(!like);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.likeBox}>
         <Pressable
           onPress={() => {
-            if (currentUser.currentUser) {
-              dispatch(
-                addLikedQuestion({
-                  userId: currentUser.currentUser?._id,
-                  newFavoritQuestion: oneQuestion,
-                })
-              );
-            }
+            handleLike();
           }}
         >
           <Text>{like ? "❤️" : "🤍"}</Text>

@@ -126,6 +126,49 @@ router.post("/:userId/likedQuestions", async (req, res) => {
   
 });
 
+//Ta bort en gillad fråga
+router.delete("/:userId/likedQuestions", async (req, res) => {
+    const {userId} = req.params;  //Hämta användarens ID från URL:en
+    const { questionId } = req.body; // Hämta frågans ID från request-body
+
+    //Kontrollera att questionId är ett giltigt ObjectId
+    if (!Mongoose.Types.ObjectId.isValid(questionId)) {
+        return res.status(400).json({ message: "Ogiltigt question-ID" });
+    }
+
+    try {
+        // Kontrollera om frågan existerar
+        const questionExists = await questionModel.findById(questionId);
+        if (!questionExists) {
+            return res.status(404).json({ message: "Frågan hittades inte" });
+        }
+
+        // Hitta användaren i databasen
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "Användaren hittades inte" });
+        }
+
+         // Kontrollera om frågan är gillad av användaren
+         if (!user.likedQuestions.includes(questionId)) {
+            return res.status(400).json({ message: "Frågan är inte gillad av användaren" });
+        }
+
+        console.log("Användarens gillade frågor före borttagning: ", user.likedQuestions);
+        //filtrera bort frågan från likedQuestions
+        user.likedQuestions = user.likedQuestions.filter((q) => {return q._id.toString() !== questionId});
+        console.log("Användarens gillade frågor efter borttagning: ", user.likedQuestions);
+
+        // Spara ändringarna i databasen
+        await user.save();
+
+        res.status(200).json({ message: "Frågan har tagits bort från gillade frågor", user });  
+    } catch (error) {
+        console.error("Error adding liked question:", error);
+        res.status(500).json({ message: "Ett serverfel inträffade", error: error.message });    }
+  
+})
+
 //Se en användares gillade frågor
 router.get("/:userId/likedQuestions", async (req, res) => {
     const {userId} = req.params; // Hämta användarens ID från URL:en

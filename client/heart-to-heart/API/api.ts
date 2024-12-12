@@ -65,6 +65,17 @@ export const deleteLikedQuestion = createAsyncThunk(
   }
 );
 
+//Hämta användarens alla gilladeFrågor
+export const fetchAllFavoritQuestions = createAsyncThunk(
+  "users/getAllLikedQuestions",
+  async (userId: String) => {
+    const response = await axios.get(
+      `http://${currentIP}:3003/users/${userId}/likedQuestions`
+    );
+    return response.data;
+  }
+);
+
 /*****LEVELS*****/
 //Hämta alla levels
 export const fetchLevels = createAsyncThunk("levels/fetchLevels", async () => {

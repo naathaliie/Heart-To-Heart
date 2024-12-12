@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from "@/redux/store.js";
 import { useEffect, useState } from "react";
 import { addNewCustomQuestion, fetchCreatedQuestions } from "@/API/api.ts";
 import PrimaryBtn from "../components/primaryBtn.tsx";
-import { NewQuestion } from "@/types.ts";
+import { NewQuestion, Question } from "@/types.ts";
 
 export default function CustomQuestions() {
   const [inputQuestion, setInputQuestion] = useState<string>("");
@@ -16,18 +16,26 @@ export default function CustomQuestions() {
   //Hämta users från redux
   const { users } = useSelector((state: RootState) => state.users);
 
+  // Här hanterar vi användarens skapade frågor lokalt
+  const [thisUsersCreatedQuestions, setThisUsersCreatedQuestions] = useState<
+    Question[]
+  >(
+    users.find((user) => user._id === currentUser.currentUser?._id)
+      ?.createdQuestions || []
+  );
+
   useEffect(() => {
+    // När currentUser ändras, uppdatera användarens skapade frågor
     if (currentUser.currentUser) {
-      dispatch(fetchCreatedQuestions(currentUser.currentUser._id));
+      setThisUsersCreatedQuestions(
+        users.find((user) => user._id === currentUser.currentUser?._id)
+          ?.createdQuestions || []
+      );
     }
-  }, [dispatch]);
+  }, [currentUser, users]);
 
   function addNewQuestion() {
-    console.log("Lägg till frågaaaa");
-
     if (currentUser.currentUser) {
-      console.log("currentuser finns?");
-
       const newQuestion: NewQuestion = {
         questionText: inputQuestion,
         categoryType: "customQuestion",
@@ -38,15 +46,20 @@ export default function CustomQuestions() {
           userId: currentUser.currentUser?._id,
           newCustomQuestion: newQuestion,
         })
-      );
-    } else {
-      console.log("currentuser finns inte");
+      )
+        .then(() => {
+          if (currentUser.currentUser) {
+            // När frågan har skapats, hämta de uppdaterade skapade frågorna
+            dispatch(fetchCreatedQuestions(currentUser.currentUser?._id));
+
+            setInputQuestion(""); // Återställ inputfältet
+          }
+        })
+        .catch((error) => {
+          console.log("Error creating new question:", error);
+        });
     }
   }
-
-  const thisUsersCreatedQuestions =
-    users.find((user) => user._id === currentUser.currentUser?._id)
-      ?.createdQuestions || [];
 
   return (
     <View style={styles.container}>

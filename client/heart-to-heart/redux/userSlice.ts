@@ -2,6 +2,7 @@ import {
   addLikedQuestion,
   addNewUser,
   deleteLikedQuestion,
+  fetchAllFavoritQuestions,
   fetchUsers,
 } from "@/API/api";
 import { User } from "@/types";
@@ -51,6 +52,16 @@ const usersSlice = createSlice({
           }
           return user;
         });
+      })
+      .addCase(fetchAllFavoritQuestions.fulfilled, (state, action) => {
+        const userId = action.meta.arg; // Få userId från action via meta.arg
+        const likedQuestions = action.payload;
+
+        const user = state.users.find((user) => user._id === userId);
+        if (user) {
+          // Uppdatera användarens likedQuestions med de hämtade frågorna
+          user.likedQuestions = likedQuestions;
+        }
       });
   },
 });

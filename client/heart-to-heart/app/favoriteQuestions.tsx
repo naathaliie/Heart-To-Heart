@@ -1,40 +1,37 @@
 import { StyleSheet, Text, View } from "react-native";
 import colors from "../styles/colors.js";
 import fonts from "../styles/fonts.js";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store.js";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store.js";
+import { useEffect, useState } from "react";
 
 export default function FavoriteQuestions() {
-  //komma åt currentUser och all denns info
+  const dispatch = useDispatch<AppDispatch>();
   const currentUser = useSelector((state: RootState) => state.currentUser);
 
-  //För att uppdatera om en ny fråga blir gillamarkerad/borttagen
+/
+
   useEffect(() => {
-    if (currentUser.currentUser) {
-      console.log(
-        "Uppdaterade gillade frågor:",
-        currentUser.currentUser.likedQuestions
-      );
-    }
-  }, [currentUser.currentUser?.likedQuestions]);
+   //ladda in alla favoritfrågor från backend
+  }, []); //Lyssna på förändringar om allafavoritfrågor ändras
 
   return (
     <View style={styles.container}>
       <View style={styles.textBox}>
-        <Text style={styles.text}>
-          Här kommer alla dina favorit-markerade frågor att synas
-        </Text>
+        <Text style={styles.text}>Dina favvofrågor</Text>
       </View>
       <View>
-        {currentUser.currentUser &&
-          currentUser.currentUser.likedQuestions.map((q) => {
+        {favoritQuestions ? (
+          favoritQuestions.map((q) => {
             return (
               <View key={q._id}>
                 <Text>{q.questionText}</Text>
               </View>
             );
-          })}
+          })
+        ) : (
+          <Text> Du har inte gillamarkerat några frågor ännu</Text>
+        )}
       </View>
     </View>
   );

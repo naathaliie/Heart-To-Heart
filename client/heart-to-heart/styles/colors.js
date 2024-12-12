@@ -1,6 +1,7 @@
 const colors = {
     dustyCherry: "#D3939D",
     dustyCherry_Dark: "#CC828E",
+    dustyCherry_superDark: "#C0596A",
     dustyCherry_Light: "#EAD0D3",
     deliciousGreen: "#94C480",
     velvet: "#E87788",

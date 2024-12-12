@@ -10,25 +10,18 @@ import colors from "../styles/colors.js";
 import fonts from "../styles/fonts.js";
 
 export default function QuestionScreen() {
-  const testQuestions = [
-    { _id: "1", questionText: "Testfråga 1" },
-    { _id: "2", questionText: "Testfråga 2" },
-    { _id: "3", questionText: "Testfråga 3" },
-  ];
-
-  //dispatch=en funktion för att skicka actions till redux store
+  //dispatchen funktion för att skicka actions till redux store
   const dispatch = useDispatch<AppDispatch>();
 
-  //Tillhandahålla all frågor för vald kategori
+  //Hämta alla frågor för vald kategori
   const [relevantQuestions, setrelevantQuestions] = useState<
     Question[] | undefined
   >(undefined);
-  //vald kategori
+
   const currentCategory = useSelector(
     (state: RootState) => state.currentCategory
   );
 
-  // Hämta frågor från Redux
   const { questions, loading, error } = useSelector(
     (state: RootState) => state.questions
   );
@@ -36,8 +29,6 @@ export default function QuestionScreen() {
   // Hämta frågor från backend: När komponenten laddas, kolla om frågorna finns i Redux-state.
   //Om inte, hämta dem med fetchQuestions.
   useEffect(() => {
-    console.log("questions längd i useeffect är: ", questions.length);
-
     // Hämta frågor om de inte redan finns
     if (questions.length === 0) {
       dispatch(fetchQuestions()); // Vänta på att frågorna ska hämtas
@@ -63,8 +54,6 @@ export default function QuestionScreen() {
   const test = relevantQuestions?.map((q) => {
     return q.questionText;
   });
-  console.log("antal frågor= ", relevantQuestions?.length);
-  console.log("Fråge titlar= ", test);
 
   if (relevantQuestions?.length !== undefined) {
     return (
@@ -89,8 +78,8 @@ export default function QuestionScreen() {
               ‹
             </Text>
           }
-          dotColor={colors.dustyCherry_Dark} // Färg för inaktiva pluppar
-          activeDotColor={colors.deliciousGreen} // Färg för aktiva pluppar
+          dotColor={colors.dustyCherry} // Färg för inaktiva pluppar
+          activeDotColor={colors.dustyCherry_superDark} // Färg för aktiva pluppar
         >
           {relevantQuestions.map((question, index) => (
             <QuestionCard key={index} oneQuestion={question} />

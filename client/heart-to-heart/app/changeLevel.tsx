@@ -7,6 +7,8 @@ import { fetchLevels } from "@/API/api";
 import { updateCurrentLevel } from "@/redux/currentLevel";
 import PrimaryBtn from "@/components/primaryBtn";
 import colors from "../styles/colors.js";
+import { Level } from "@/types.ts";
+import fonts from "@/styles/fonts.js";
 
 export default function LevelsScreen() {
   const router = useRouter();
@@ -25,6 +27,11 @@ export default function LevelsScreen() {
     (state: RootState) => state.levels
   );
 
+  function handleChangeLevel(level: Level) {
+    dispatch(updateCurrentLevel(level));
+    router.push("/(tabs)/homeScreen");
+  }
+
   if (loading) {
     return <Text>Loading...</Text>;
   }
@@ -36,24 +43,22 @@ export default function LevelsScreen() {
   return (
     <View style={styles.container}>
       <View>
-        <Text>Här kan du ändra vald nivå</Text>
+        <Text style={{ fontSize: fonts.fontSizes.medium, marginBottom: 40 }}>
+          Nuvarande nivå: {currentlevel.currentLevel?.level}
+        </Text>
       </View>
-
       <View>
         {levels.map((level) => {
           return (
             <PrimaryBtn
               key={level._id}
               title={level.level}
-              onPress={() => dispatch(updateCurrentLevel(level))}
+              onPress={() => handleChangeLevel(level)}
               color="dustyCherryDark"
               size="big"
             />
           );
         })}
-      </View>
-      <View>
-        <Text>Nuvarande nivå: {currentlevel.currentLevel?.level}</Text>
       </View>
     </View>
   );

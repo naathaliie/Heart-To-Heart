@@ -67,6 +67,9 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <View style={styles.textBox}>
         <Text style={{ fontSize: fonts.fontSizes.large }}>Välj kategori</Text>
+        <Text style={{ fontSize: fonts.fontSizes.small, textAlign: "center" }}>
+          Nivå: {currentLevel.currentLevel?.level}
+        </Text>
       </View>
 
       <View style={styles.categoriesBox}>
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
   },
-  textBox: {},
+  textBox: { alignItems: "center" },
   categoriesBox: {},
   btn: {
     backgroundColor: "#08AEAD",

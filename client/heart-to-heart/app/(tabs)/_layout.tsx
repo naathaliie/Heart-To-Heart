@@ -1,6 +1,5 @@
 import { Tabs } from "expo-router";
 import colors from "../../styles/colors.js";
-import fonts from "../../styles/fonts.js";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function TabsLayout() {
@@ -8,9 +7,9 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: colors.silver,
-        tabBarInactiveTintColor: colors.dustyCherry_Dark,
+        tabBarInactiveTintColor: colors.dustyCherry_superDark,
         headerStyle: {
-          backgroundColor: colors.dustyCherry,
+          backgroundColor: colors.dustyCherry_Dark,
         },
         headerShadowVisible: false,
         headerTintColor: colors.silver,

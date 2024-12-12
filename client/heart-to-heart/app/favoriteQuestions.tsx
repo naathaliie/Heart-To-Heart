@@ -25,12 +25,13 @@ export default function FavoriteQuestions() {
   return (
     <View style={styles.container}>
       <View style={styles.textBox}>
-        <Text style={styles.text}>Dina favvofrågor</Text>
+        <Text style={styles.text}>Dina gillade frågor</Text>
       </View>
       <ScrollView
         contentContainerStyle={{
+          alignContent: "center",
           paddingBottom: 80, // Extra utrymme längst ner för att visa sista frågan
-          paddingTop: 20,
+          paddingTop: 10,
         }}
       >
         <View style={styles.favQuestionBox}>
@@ -58,7 +59,7 @@ export default function FavoriteQuestions() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    paddingBottom: 80,
+    paddingBottom: 20,
     paddingTop: 20,
     backgroundColor: colors.myBackground,
   },
@@ -77,7 +78,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.dustyCherry_Dark,
     margin: 7,
     padding: 15,
-    width: "85%",
     borderRadius: 20,
     gap: 5,
   },

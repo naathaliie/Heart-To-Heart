@@ -62,8 +62,6 @@ export default function Index() {
         contentFit="cover"
         allowDownscaling={true}
       />
-
-      <Text style={styles.text}>Välommen</Text>
     </View>
   );
 }
@@ -81,14 +79,5 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "absolute", // Gör att bilden fyller hela skärme
     backgroundColor: "#0553",
-  },
-
-  text: {
-    color: "white",
-    fontSize: 30,
-    fontWeight: "bold",
-    backgroundColor: "black",
-    padding: 15,
-    borderRadius: 20,
   },
 });

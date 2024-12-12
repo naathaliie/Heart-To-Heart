@@ -7,7 +7,7 @@ const fonts = {
 };
 
 const fontSizes = {
-    small: 15,
+    small: 13,
     medium: 20,
     large: 30,
     xl: 40

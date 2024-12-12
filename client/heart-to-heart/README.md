@@ -1,50 +1,34 @@
-# Welcome to your Expo app 👋
+# Om projektet
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Heart to heart är en individuell inlämningsuppgift i kursen Apputveckling, skapad av Nathalie Larsson i klass Frontend23.
 
-## Get started
+Tanken med appen är att det skall vara en digital frågelåda som skall förenkla små stunder i vardagen att kommunicera och komma närmare varandra. Stora samtal börjar med små frågor!
 
-1. Install dependencies
+## Installation
+
+Innan du kan starta appen behöver du klona repot och installera de nödvändiga dependencies som projektet behöver.
+
+Så här gör du:
+
+1. Installera dependencies, både i mappen Client och i mappen Server
 
    ```bash
    npm install
    ```
 
-2. Start the app
+## Starta programmet
+
+1. Starta servern ifrån mappen server
+
+   ```bash
+    node server.js
+   ```
+
+2. Starta Appen ifrån mappen client-> heart-to-heart
 
    ```bash
     npx expo start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+I mappen API finns filen api.ts. På rad 6 behöver du uppdatera till korrekt ip-adress.
+Din ip-adress hittar du genom att skriva in Ipconfig i en kommandoterminal, leta upp raden som heter IPv4 och byt ut variabeln currentIP till din ip

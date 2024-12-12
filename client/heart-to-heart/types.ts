@@ -39,6 +39,11 @@ export type Question = {
   categoryType: string;
 };
 
+export type NewQuestion = {
+  questionText: string;
+  categoryType: string;
+};
+
 /*****OTHER TYPES*****/
 export type Options = {
   title: string;

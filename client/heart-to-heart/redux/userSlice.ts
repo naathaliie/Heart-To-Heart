@@ -1,8 +1,10 @@
 import {
   addLikedQuestion,
+  addNewCustomQuestion,
   addNewUser,
   deleteLikedQuestion,
   fetchAllFavoritQuestions,
+  fetchCreatedQuestions,
   fetchUsers,
 } from "@/API/api";
 import { User } from "@/types";
@@ -61,6 +63,24 @@ const usersSlice = createSlice({
         if (user) {
           // Uppdatera användarens likedQuestions med de hämtade frågorna
           user.likedQuestions = likedQuestions;
+        }
+      })
+      .addCase(fetchCreatedQuestions.fulfilled, (state, action) => {
+        const userId = action.meta.arg; // Få userId från action via meta.arg
+        const createdQuestions = action.payload;
+
+        const user = state.users.find((user) => user._id === userId);
+        if (user) {
+          // Uppdatera användarens likedQuestions med de hämtade frågorna
+          user.createdQuestions = createdQuestions;
+        }
+      })
+      .addCase(addNewCustomQuestion.fulfilled, (state, action) => {
+        const { userId, newCustomQuestion } = action.payload;
+        const user = state.users.find((user) => user._id === userId);
+        if (user) {
+          // Lägg till frågan i användarens createdQuestions
+          user.createdQuestions.push(newCustomQuestion);
         }
       });
   },

@@ -1,4 +1,4 @@
-import { NewLike, NewUser, Question } from "@/types";
+import { NewLike, NewQuestion, NewUser, Question } from "@/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -68,9 +68,41 @@ export const deleteLikedQuestion = createAsyncThunk(
 //Hämta användarens alla gilladeFrågor
 export const fetchAllFavoritQuestions = createAsyncThunk(
   "users/getAllLikedQuestions",
-  async (userId: String) => {
+  async (userId: string) => {
     const response = await axios.get(
       `http://${currentIP}:3003/users/${userId}/likedQuestions`
+    );
+    return response.data;
+  }
+);
+
+//Hämta användarens skapade frågor
+export const fetchCreatedQuestions = createAsyncThunk(
+  "users/fetchCreatedQuestions",
+  async (userId: string) => {
+    const response = await axios.get(
+      `http://${currentIP}:3003/users/${userId}/createdQuestions`
+    );
+    return response.data;
+  }
+);
+
+//Lägg till en användares skapade fråga
+
+export const addNewCustomQuestion = createAsyncThunk(
+  "users/addNewCustomQuestion",
+  async ({
+    userId,
+    newCustomQuestion,
+  }: {
+    userId: string;
+    newCustomQuestion: NewQuestion;
+  }) => {
+    console.log("Du är inne i addNewCustomUser från API");
+    console.log("UserID som du skickar är: ", userId);
+    const response = await axios.post(
+      `http://${currentIP}:3003/users/${userId}/createdQuestions`,
+      newCustomQuestion
     );
     return response.data;
   }

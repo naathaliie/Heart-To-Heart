@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import colors from "../styles/colors.js";
 import fonts from "../styles/fonts.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -63,13 +63,11 @@ export default function CustomQuestions() {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.text}>
-          Här kommer du att kunna lägga till egna frågor
-        </Text>
-      </View>
+      <View style={styles.createNewQuestionBox}>
+        <View>
+          <Text style={styles.text}>Skapa en egen fråga </Text>
+        </View>
 
-      <View>
         <TextInput
           onChangeText={(text) => setInputQuestion(text)}
           value={inputQuestion}
@@ -77,28 +75,34 @@ export default function CustomQuestions() {
           style={styles.inputField}
         />
 
-        {/* LÄGGA TILL EN KNAPP OCH NÄR MAN KLICKAR PÅ DEN SKALL ORDET SPARAS OCH SEDAN BLI TILL EN NY FRÅGA SOM SKALL SPARAS I DB */}
         <PrimaryBtn
           title="Lägg till"
           onPress={() => addNewQuestion()}
           color="deliciousGreen"
-          size="big"
+          size="small"
         />
       </View>
-
-      <View>
-        {thisUsersCreatedQuestions.length > 0 ? (
-          thisUsersCreatedQuestions.map((q) => {
-            return (
-              <View key={q._id}>
-                <Text>{q.questionText}</Text>
-              </View>
-            );
-          })
-        ) : (
-          <Text>Du har inte skapat några egna frågor ännu</Text>
-        )}
-      </View>
+      <ScrollView
+        contentContainerStyle={{
+          alignContent: "center",
+          paddingBottom: 80, // Extra utrymme längst ner för att visa sista frågan
+          paddingTop: 20,
+        }}
+      >
+        <View style={styles.myCreatedQuestionBox}>
+          {thisUsersCreatedQuestions.length > 0 ? (
+            thisUsersCreatedQuestions.map((q) => {
+              return (
+                <View key={q._id} style={styles.customQuestion}>
+                  <Text style={styles.questionText}>{q.questionText}</Text>
+                </View>
+              );
+            })
+          ) : (
+            <Text>Du har inte skapat några egna frågor ännu</Text>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -107,7 +111,18 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.myBackground,
     flex: 1,
+    alignItems: "center",
+  },
+  createNewQuestionBox: {
+    marginVertical: 40,
+    paddingBottom: 30,
+    borderBottomWidth: 1,
+    borderColor: colors.dustyCherry_Dark,
+    width: "90%",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  myCreatedQuestionBox: {
     alignItems: "center",
   },
   text: {
@@ -116,8 +131,23 @@ const styles = StyleSheet.create({
   },
   inputField: {
     height: 40,
+    width: "75%",
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 10,
+  },
+  customQuestion: {
+    backgroundColor: colors.dustyCherry_Dark,
+    margin: 7,
+    padding: 15,
+    width: "85%",
+    borderRadius: 20,
+    gap: 5,
+  },
+  questionText: {
+    fontSize: fonts.fontSizes.medium,
+    color: colors.silver,
+    textAlign: "center",
   },
 });

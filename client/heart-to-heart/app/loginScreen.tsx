@@ -30,7 +30,7 @@ export default function loginScreen() {
   const [inputWord, setInputword] = useState("");
 
   //Se vald profil man vill logga in med
-  const [chossedProfile, setChossedProfile] = useState<User | undefined>(
+  const [chosedProfile, setChosedProfile] = useState<User | undefined>(
     undefined
   );
 
@@ -42,8 +42,8 @@ export default function loginScreen() {
   //hantera gå till appen-knappen
   function handleGoToApp() {
     // Dispatcha action för att uppdatera currentUser i Redux
-    if (chossedProfile) {
-      dispatch(updateCurrentUser(chossedProfile)); // Uppdaterar Redux store med den valda användaren
+    if (chosedProfile) {
+      dispatch(updateCurrentUser(chosedProfile)); // Uppdaterar Redux store med den valda användaren
     }
     router.replace("/levelsScreen");
   }
@@ -93,7 +93,7 @@ export default function loginScreen() {
                 <PrimaryBtn
                   key={user._id + user.username}
                   title={user.username}
-                  onPress={() => setChossedProfile(user)}
+                  onPress={() => setChosedProfile(user)}
                   color="dustyCherryDark"
                   size="small"
                 />
@@ -101,7 +101,7 @@ export default function loginScreen() {
             })}
           </View>
           <Text style={{ fontSize: fonts.fontSizes.small }}>
-            Du kommer nu att logga in som: {chossedProfile?.username}
+            Du kommer nu att logga in som: {chosedProfile?.username}
           </Text>
           <PrimaryBtn
             title="Gå till appen"

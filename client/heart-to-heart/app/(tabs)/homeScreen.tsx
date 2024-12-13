@@ -11,7 +11,11 @@ import fonts from "../../styles/fonts.js";
 import colors from "../../styles/colors.js";
 
 export default function HomeScreen() {
+  //dispatch=en funktion för att skicka actions till redux store
+  const dispatch = useDispatch<AppDispatch>();
+
   const router = useRouter();
+
   //Spara vald nivås kategorier
   const [filteredCategories, setFilteredCategories] = useState<
     Category[] | undefined
@@ -20,22 +24,15 @@ export default function HomeScreen() {
   const [coosedCategory, setChoosedCategory] = useState<Category | undefined>(
     undefined
   );
-  //dispatch=en funktion för att skicka actions till redux store
-  const dispatch = useDispatch<AppDispatch>();
-  //Hämta inloggad user
-  const currentUser = useSelector((state: RootState) => state.currentUser);
-  //Hämta vald nivå
-  const currentLevel = useSelector((state: RootState) => state.currentLevel);
 
-  // Hämta kategorier från Redux
+  //Hämta från redux
+  const currentLevel = useSelector((state: RootState) => state.currentLevel);
   const { categories, loading, error } = useSelector(
     (state: RootState) => state.categories
   );
 
   function handleOnPress(oneCategory: Category) {
     dispatch(updateCurrentCategory(oneCategory));
-    //navigera till questionScreen
-    console.log("vald kategori= ", oneCategory.title);
     router.push("/questionScreen");
   }
 

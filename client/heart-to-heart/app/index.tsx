@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { StatusBar, StyleSheet, Text, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import ShadowsIntoLight from "../assets/fonts/ShadowsIntoLight-Regular.ttf";
@@ -11,10 +11,9 @@ import { Image } from "expo-image";
 const seconds = 3000;
 
 export default function Index() {
-  //Komma åt routern
   const router = useRouter();
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [timeoutReached, setTimeoutReached] = useState(false); // Håller koll på om seconds sekunder har passerat
+  const [timeoutReached, setTimeoutReached] = useState(false);
 
   //Effect för att ladda fonts
   useEffect(() => {
@@ -39,7 +38,7 @@ export default function Index() {
     // Timer för att säkerställa att splashscreen visas i minst seconds sekunder
     const timer = setTimeout(() => {
       setTimeoutReached(true); // Sätt timeoutReached till true efter seconds sekunder
-    }, seconds); // 5 sekunder
+    }, seconds);
 
     return () => clearTimeout(timer); // Rensa timern när komponenten unmountas
   }, []);
@@ -48,7 +47,7 @@ export default function Index() {
     // När både fonten är laddad och den minsta tiden har gått (seconds sek)
     if (fontsLoaded && timeoutReached) {
       SplashScreen.hideAsync(); // Dölj splash screen
-      router.replace("/loginScreen"); // Navigera automatiskt till login screen
+      router.replace("/loginScreen");
     }
   }, [fontsLoaded, timeoutReached, router]);
 
@@ -74,10 +73,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#25292c",
   },
   imgStyle: {
-    flex: 1, // Täcker hela föräldraview
+    flex: 1,
     width: "100%",
     height: "100%",
-    position: "absolute", // Gör att bilden fyller hela skärme
+    position: "absolute",
     backgroundColor: "#0553",
   },
 });

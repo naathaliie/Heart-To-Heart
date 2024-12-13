@@ -19,10 +19,8 @@ export default function LevelsScreen() {
     dispatch(fetchLevels());
   }, [dispatch]);
 
-  //Hämta nuvarande nivå
+  //Hämta från Redux
   const currentlevel = useSelector((state: RootState) => state.currentLevel);
-
-  // Hämta levels från Redux
   const { levels, loading, error } = useSelector(
     (state: RootState) => state.levels
   );

@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Pressable,
   TextInput,
   ScrollView,
   Dimensions,
@@ -17,24 +16,24 @@ import { addNewUser, fetchUsers } from "@/API/api";
 import PrimaryBtn from "@/components/primaryBtn";
 import fonts from "@/styles/fonts.js";
 import { Modal, Portal, Button, PaperProvider } from "react-native-paper";
+import { StatusBar } from "react-native";
+import colors from "@/styles/colors";
 
 export default function loginScreen() {
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const [inputWord, setInputword] = useState("");
+
   /***MODAL-STUFF***/
   const [visible, setVisible] = useState(false);
-
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
   /***MODAL-STUFF***/
 
-  const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
-
-  // Hämta användare från Redux
+  // Hämta från Redux
   const { users, loading, error } = useSelector(
     (state: RootState) => state.users
   );
-
-  const [inputWord, setInputword] = useState("");
 
   const [chosedProfile, setChosedProfile] = useState<User | undefined>(
     undefined
@@ -85,6 +84,11 @@ export default function loginScreen() {
           paddingBottom: 30,
         }}
       >
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor={colors.myBackground}
+        />
+
         <View style={styles.container}>
           <View style={styles.existingProfilesContainer}>
             <Text
@@ -121,8 +125,6 @@ export default function loginScreen() {
               size="big"
             />
           </View>
-
-          {/* KANSKE EN MODAL AV NEDAN? */}
 
           <Portal>
             <Modal

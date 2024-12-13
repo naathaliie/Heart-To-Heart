@@ -101,8 +101,6 @@ export function userRouter() {
   router.post("/:userId/likedQuestions", async (req, res) => {
     const { userId } = req.params; // Hämta användarens ID från URL:en
     const question = req.body; // Förvänta att hela frågeobjektet skickas i body
-    console.log("FRÅN USERROUTER, MEDSKICKAD FRÅGA", req.body);
-    console.log("FRÅN USERROUTER, MEDSKICKAD USER", userId);
 
     // Validera frågeobjektet med Zod
     const zodResult = zodQuestionSchema.safeParse(question);

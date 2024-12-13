@@ -13,9 +13,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const usersSlice = createSlice({
   name: "users",
   initialState: {
-    users: [] as User[], // Typa initialState
+    users: [] as User[],
     loading: false,
-    error: null as string | null, // Tillåter både string och null
+    error: null as string | null,
   },
   reducers: {},
   //EXTRAREDUCERS FÖR ALL HANTERING MOT DB

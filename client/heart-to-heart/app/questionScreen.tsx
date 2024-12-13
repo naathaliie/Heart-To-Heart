@@ -31,7 +31,7 @@ export default function QuestionScreen() {
   useEffect(() => {
     // Hämta frågor om de inte redan finns
     if (questions.length === 0) {
-      dispatch(fetchQuestions()); // Vänta på att frågorna ska hämtas
+      dispatch(fetchQuestions());
     }
   }, [dispatch, questions.length]);
 

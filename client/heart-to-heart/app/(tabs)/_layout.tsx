@@ -24,7 +24,6 @@ export default function TabsLayout() {
         options={{
           headerTitle: "Hjärta till Hjärta",
           tabBarLabel: "Hem",
-          headerTitleStyle: { fontFamily: "Roboto" }, //FUNGEAR EJ:(
           tabBarIcon: ({ focused, color }) => (
             <Ionicons
               name={focused ? "home" : "home-outline"}

@@ -9,7 +9,6 @@ import { fetchAllFavoritQuestions } from "@/API/api.ts";
 export default function FavoriteQuestions() {
   const dispatch = useDispatch<AppDispatch>();
   const currentUser = useSelector((state: RootState) => state.currentUser);
-
   const { users } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
@@ -24,9 +23,6 @@ export default function FavoriteQuestions() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.textBox}>
-        <Text style={styles.text}>Dina gillade frågor</Text>
-      </View>
       <ScrollView
         contentContainerStyle={{
           alignContent: "center",

@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { Text, Pressable, StyleSheet } from "react-native";
 import colors from "../styles/colors.js";
 
 type PrimaryBtnProps = {

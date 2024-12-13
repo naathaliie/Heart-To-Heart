@@ -1,4 +1,11 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Keyboard,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import colors from "../styles/colors.js";
 import fonts from "../styles/fonts.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,12 +18,11 @@ import { NewQuestion, Question } from "@/types.ts";
 export default function CustomQuestions() {
   const [inputQuestion, setInputQuestion] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
-  //hämta currentUser
+  //hämta från redux
   const currentUser = useSelector((state: RootState) => state.currentUser);
-  //Hämta users från redux
   const { users } = useSelector((state: RootState) => state.users);
 
-  // Här hanterar vi användarens skapade frågor lokalt
+  // Hanterar användarens skapade frågor
   const [thisUsersCreatedQuestions, setThisUsersCreatedQuestions] = useState<
     Question[]
   >(
@@ -41,18 +47,20 @@ export default function CustomQuestions() {
         categoryType: "customQuestion",
       };
 
+      Keyboard.dismiss();
+
       dispatch(
         addNewCustomQuestion({
           userId: currentUser.currentUser?._id,
           newCustomQuestion: newQuestion,
         })
       )
+        // När frågan har skapats, hämta de uppdaterade skapade frågorna
         .then(() => {
           if (currentUser.currentUser) {
-            // När frågan har skapats, hämta de uppdaterade skapade frågorna
             dispatch(fetchCreatedQuestions(currentUser.currentUser?._id));
 
-            setInputQuestion(""); // Återställ inputfältet
+            setInputQuestion("");
           }
         })
         .catch((error) => {

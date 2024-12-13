@@ -1,5 +1,5 @@
 import { AppDispatch, RootState } from "@/redux/store";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -15,28 +15,25 @@ export default function LevelsScreen() {
   //Spara klickad nivå
   const [choosedLevel, setChoosedLevel] = useState<Level | null>(null);
 
-  //Hämta inloggad user
+  //Hämta från redux
   const currentUser = useSelector((state: RootState) => state.currentUser);
+  const { levels, loading, error } = useSelector(
+    (state: RootState) => state.levels
+  );
 
   // Hämta alla levels när komponenten renderas första gången
   useEffect(() => {
     dispatch(fetchLevels());
   }, [dispatch]);
 
-  //hantera knappen gå vidare
   function handleGoToNext() {
     // Dispatcha action för att uppdatera currentUser i Redux
     if (choosedLevel) {
-      dispatch(updateCurrentLevel(choosedLevel)); // Uppdaterar Redux store med den valda nivån
+      dispatch(updateCurrentLevel(choosedLevel));
     }
 
     router.replace("/(tabs)/homeScreen");
   }
-
-  // Hämta levels från Redux
-  const { levels, loading, error } = useSelector(
-    (state: RootState) => state.levels
-  );
 
   if (loading) {
     return <Text>Loading...</Text>;
@@ -50,7 +47,7 @@ export default function LevelsScreen() {
     <View style={styles.container}>
       <View>
         <Text style={{ fontSize: fonts.fontSizes.medium }}>
-          Anpassa innehållet efter ålder
+          Välj nivå på frågorna
         </Text>
       </View>
 
@@ -73,7 +70,7 @@ export default function LevelsScreen() {
 
       <View>
         <PrimaryBtn
-          title="Välj kategori och gå viadre"
+          title="Till appen"
           onPress={() => handleGoToNext()}
           color="deliciousGreen"
           size="big"

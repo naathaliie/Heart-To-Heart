@@ -5,9 +5,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const levelsSlice = createSlice({
   name: "levels",
   initialState: {
-    levels: [] as Level[], // Typa initialState
+    levels: [] as Level[],
     loading: false,
-    error: null as string | null, // Tillåter både string och null
+    error: null as string | null,
   },
   reducers: {},
   //EXTRAREDUCERS FÖR ALL HANTERING MOT DB

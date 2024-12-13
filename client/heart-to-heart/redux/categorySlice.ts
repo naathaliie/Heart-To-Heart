@@ -5,9 +5,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const categoriesSlice = createSlice({
   name: "categories",
   initialState: {
-    categories: [] as Category[], // Typa initialState
+    categories: [] as Category[],
     loading: false,
-    error: null as string | null, // Tillåter både string och null
+    error: null as string | null,
   },
   reducers: {},
   //EXTRAREDUCERS FÖR ALL HANTERING MOT DB

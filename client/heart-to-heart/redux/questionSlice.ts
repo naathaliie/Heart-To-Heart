@@ -5,9 +5,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const questionsSlice = createSlice({
   name: "questions",
   initialState: {
-    questions: [] as Question[], // Typa initialState
+    questions: [] as Question[],
     loading: false,
-    error: null as string | null, // Tillåter både string och null
+    error: null as string | null,
   },
   reducers: {},
   //EXTRAREDUCERS FÖR ALL HANTERING MOT DB
